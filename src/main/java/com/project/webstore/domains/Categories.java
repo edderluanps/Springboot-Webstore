@@ -2,11 +2,17 @@ package com.project.webstore.domains;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table
 public class Categories implements Serializable{
 
     private static final long serialVersionUID = 1L;
     
+    @Id
     private Integer id;
     private String name;
 
