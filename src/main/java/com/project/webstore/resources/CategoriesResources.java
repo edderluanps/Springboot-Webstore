@@ -19,7 +19,7 @@ public class CategoriesResources {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> find(@PathVariable Integer id){
         Categories obj = catservice.buscar(id);
-        return ResponseEntity.ok().body(id);
+        return ResponseEntity.ok().body(obj);
         
     }
     
