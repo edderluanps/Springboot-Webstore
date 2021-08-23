@@ -8,27 +8,32 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 @Entity
-public class Categories implements Serializable{
+public class Products implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
+    private Double price;
     
-    @ManyToMany(mappedBy = "categories")
-    private List<Products> products = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(name = "Product_categories", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "categories_id"))
+    private List<Categories> categories = new ArrayList<>();
 
-    public Categories() {
+    public Products() {
     }
 
-    public Categories(Integer id, String name) {
+    public Products(Integer id, String name, Double price) {
         this.id = id;
         this.name = name;
+        this.price = price;
     }
 
     public Integer getId() {
@@ -47,18 +52,26 @@ public class Categories implements Serializable{
         this.name = name;
     }
 
-    public List<Products> getProducts() {
-        return products;
+    public Double getPrice() {
+        return price;
     }
 
-    public void setProducts(List<Products> products) {
-        this.products = products;
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public List<Categories> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Categories> categories) {
+        this.categories = categories;
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 17 * hash + Objects.hashCode(this.id);
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -73,11 +86,11 @@ public class Categories implements Serializable{
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Categories other = (Categories) obj;
+        final Products other = (Products) obj;
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         return true;
     }
-    
+
 }
