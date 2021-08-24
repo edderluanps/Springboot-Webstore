@@ -2,10 +2,15 @@ package com.project.webstore;
 
 import com.project.webstore.domains.Categories;
 import com.project.webstore.domains.Cidade;
+import com.project.webstore.domains.Cliente;
+import com.project.webstore.domains.Endereco;
 import com.project.webstore.domains.Estado;
 import com.project.webstore.domains.Products;
+import com.project.webstore.domains.enums.TipoCliente;
 import com.project.webstore.repositories.CategoriesRepository;
 import com.project.webstore.repositories.CidadeRepository;
+import com.project.webstore.repositories.ClienteRepository;
+import com.project.webstore.repositories.EnderecoRepository;
 import com.project.webstore.repositories.EstadoRepository;
 import com.project.webstore.repositories.ProductsRepository;
 import java.util.Arrays;
@@ -29,6 +34,12 @@ public class SpringbootWebstoreApplication implements CommandLineRunner {
     @Autowired
     private CidadeRepository cidadeRepository;
 
+    @Autowired
+    private ClienteRepository clienteRepository;
+    
+    @Autowired
+    private EnderecoRepository enderecoRepository;
+    
     public static void main(String[] args) {
         SpringApplication.run(SpringbootWebstoreApplication.class, args);
     }
@@ -65,7 +76,17 @@ public class SpringbootWebstoreApplication implements CommandLineRunner {
         
         estadoRepository.saveAll(Arrays.asList(est1, est2));
         cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
-
+        
+        Cliente cli1 = new Cliente(null, "Maria Silva","maria@email.com", "1234567890", TipoCliente.PESSOAFISICA);
+        cli1.getTelefones().addAll(Arrays.asList("87654321", "12345678"));
+        
+        Endereco e1 = new Endereco(null, "Rua X", "1", "prox. ao castelo do rei", "centro", "33987-000", cli1, c1);
+        Endereco e2 = new Endereco(null, "Rua Y", "2", "prox. ao castelo da rainha", "centro", "12345-000", cli1, c2);
+        
+        cli1.getEndereco().addAll(Arrays.asList(e1, e2));
+        
+        clienteRepository.saveAll(Arrays.asList(cli1));
+        enderecoRepository.saveAll(Arrays.asList(e1, e2));
 
     }
 
