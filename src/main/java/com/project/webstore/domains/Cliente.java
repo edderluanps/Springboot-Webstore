@@ -1,5 +1,6 @@
 package com.project.webstore.domains;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.webstore.domains.enums.TipoCliente;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class Cliente implements Serializable{
     private String cpfouCnpj;
     private Integer tipo;
     
+    @JsonManagedReference
     @OneToMany(mappedBy = "cliente")
     private List<Endereco> endereco = new ArrayList<>();
     
