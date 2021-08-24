@@ -1,5 +1,6 @@
 package com.project.webstore.domains;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class Products implements Serializable {
     private String name;
     private Double price;
     
+    @JsonBackReference
     @ManyToMany
     @JoinTable(name = "Product_categories", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "categories_id"))
     private List<Categories> categories = new ArrayList<>();
