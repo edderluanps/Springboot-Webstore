@@ -3,8 +3,10 @@ package com.project.webstore.domains;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Products implements Serializable {
@@ -24,11 +27,23 @@ public class Products implements Serializable {
     private String name;
     private Double price;
     
+    public List<Pedidos> getPedidos(){
+        List<Pedidos> lista = new ArrayList<>();
+        
+        for (ItemPedido x : itens){
+            lista.add(x.getPedidos());
+        }
+        return lista;
+    }
+    
     @JsonBackReference
     @ManyToMany
     @JoinTable(name = "Product_categories", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "categories_id"))
     private List<Categories> categories = new ArrayList<>();
-
+    
+    @OneToMany(mappedBy = "id.produto")
+    private Set<ItemPedido> itens = new HashSet<>();
+    
     public Products() {
     }
 
@@ -68,6 +83,14 @@ public class Products implements Serializable {
 
     public void setCategories(List<Categories> categories) {
         this.categories = categories;
+    }
+
+    public Set<ItemPedido> getItens() {
+        return itens;
+    }
+
+    public void setItens(Set<ItemPedido> itens) {
+        this.itens = itens;
     }
 
     @Override
