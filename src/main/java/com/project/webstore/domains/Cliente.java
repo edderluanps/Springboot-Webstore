@@ -1,5 +1,6 @@
 package com.project.webstore.domains;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.webstore.domains.enums.TipoCliente;
 import java.io.Serializable;
@@ -37,6 +38,7 @@ public class Cliente implements Serializable{
     @CollectionTable(name = "telefone")
     private Set<String> telefones = new HashSet<>();
     
+    @JsonBackReference
     @OneToMany(mappedBy = "cliente")
     private List<Pedidos> pedidos = new ArrayList<>();
     

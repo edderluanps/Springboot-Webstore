@@ -1,6 +1,7 @@
 package com.project.webstore.domains;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,11 +28,12 @@ public class Products implements Serializable {
     private String name;
     private Double price;
     
+    @JsonIgnore
     public List<Pedidos> getPedidos(){
         List<Pedidos> lista = new ArrayList<>();
         
         for (ItemPedido x : itens){
-            lista.add(x.getPedidos());
+            lista.add(x.getPedido());
         }
         return lista;
     }
@@ -41,6 +43,7 @@ public class Products implements Serializable {
     @JoinTable(name = "Product_categories", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "categories_id"))
     private List<Categories> categories = new ArrayList<>();
     
+    @JsonIgnore
     @OneToMany(mappedBy = "id.produto")
     private Set<ItemPedido> itens = new HashSet<>();
     

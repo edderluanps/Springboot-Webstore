@@ -1,5 +1,6 @@
 package com.project.webstore.domains;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.project.webstore.domains.enums.EstadoPagamento;
 import java.io.Serializable;
 import java.util.Objects;
@@ -21,6 +22,7 @@ public abstract class Pagamento implements Serializable{
     private Integer id;
     private Integer estado;
     
+    @JsonBackReference
     @OneToOne
     @JoinColumn(name = "pedido_id")
     @MapsId

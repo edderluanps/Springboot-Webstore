@@ -1,5 +1,6 @@
 package com.project.webstore.domains;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.EmbeddedId;
@@ -10,6 +11,7 @@ public class ItemPedido implements Serializable{
 
     private static final long serialVersionUID = 1L;
     
+    @JsonIgnore
     @EmbeddedId
     private ItemPedidoPK id = new ItemPedidoPK();
     
@@ -27,11 +29,12 @@ public class ItemPedido implements Serializable{
         this.Qtd = Qtd;
         this.preco = preco;
     }
-    
-    public Pedidos getPedidos(){
+  
+    @JsonIgnore
+    public Pedidos getPedido() {
         return id.getPedido();
     }
-
+    
     public Products getProduto() {
         return id.getProduto();
     }
