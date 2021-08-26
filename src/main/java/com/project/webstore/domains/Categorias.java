@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 @Entity
-public class Categories implements Serializable{
+public class Categorias implements Serializable{
 
     private static final long serialVersionUID = 1L;
     
@@ -21,12 +21,12 @@ public class Categories implements Serializable{
     private String name;
     
     @ManyToMany(mappedBy = "categories")
-    private List<Products> products = new ArrayList<>();
+    private List<Produtos> products = new ArrayList<>();
 
-    public Categories() {
+    public Categorias() {
     }
 
-    public Categories(Integer id, String name) {
+    public Categorias(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -47,11 +47,11 @@ public class Categories implements Serializable{
         this.name = name;
     }
 
-    public List<Products> getProducts() {
+    public List<Produtos> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Products> products) {
+    public void setProducts(List<Produtos> products) {
         this.products = products;
     }
 
@@ -73,7 +73,7 @@ public class Categories implements Serializable{
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Categories other = (Categories) obj;
+        final Categorias other = (Categorias) obj;
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }

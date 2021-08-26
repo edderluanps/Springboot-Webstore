@@ -1,6 +1,6 @@
 package com.project.webstore;
 
-import com.project.webstore.domains.Categories;
+import com.project.webstore.domains.Categorias;
 import com.project.webstore.domains.Cidade;
 import com.project.webstore.domains.Cliente;
 import com.project.webstore.domains.Endereco;
@@ -10,10 +10,9 @@ import com.project.webstore.domains.Pagamento;
 import com.project.webstore.domains.PagamentoComBoleto;
 import com.project.webstore.domains.PagamentoComCartao;
 import com.project.webstore.domains.Pedidos;
-import com.project.webstore.domains.Products;
+import com.project.webstore.domains.Produtos;
 import com.project.webstore.domains.enums.EstadoPagamento;
 import com.project.webstore.domains.enums.TipoCliente;
-import com.project.webstore.repositories.CategoriesRepository;
 import com.project.webstore.repositories.CidadeRepository;
 import com.project.webstore.repositories.ClienteRepository;
 import com.project.webstore.repositories.EnderecoRepository;
@@ -21,22 +20,23 @@ import com.project.webstore.repositories.EstadoRepository;
 import com.project.webstore.repositories.ItemPedidoRepository;
 import com.project.webstore.repositories.PagamentoRepository;
 import com.project.webstore.repositories.PedidoRepository;
-import com.project.webstore.repositories.ProductsRepository;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.project.webstore.repositories.CategoriasRepository;
+import com.project.webstore.repositories.ProdutosRepository;
 
 @SpringBootApplication
 public class SpringbootWebstoreApplication implements CommandLineRunner {
     
     @Autowired
-    private CategoriesRepository categoriesRepository;
+    private CategoriasRepository categoriesRepository;
 
     @Autowired
-    private ProductsRepository productsRepository;  
+    private ProdutosRepository productsRepository;  
     
     @Autowired
     private EstadoRepository estadoRepository;
@@ -66,12 +66,12 @@ public class SpringbootWebstoreApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Categories cat1 = new Categories(null, "Informática");
-        Categories cat2 = new Categories(null, "Escrtitório");
+        Categorias cat1 = new Categorias(null, "Informática");
+        Categorias cat2 = new Categorias(null, "Escrtitório");
         
-        Products prod1 = new Products(null, "Computador", 2000.00);
-        Products prod2 = new Products(null, "Impressora", 800.00);
-        Products prod3 = new Products(null, "Mouse", 80.00);
+        Produtos prod1 = new Produtos(null, "Computador", 2000.00);
+        Produtos prod2 = new Produtos(null, "Impressora", 800.00);
+        Produtos prod3 = new Produtos(null, "Mouse", 80.00);
         
         cat1.getProducts().addAll(Arrays.asList(prod1, prod2, prod3));
         cat2.getProducts().addAll(Arrays.asList(prod2));

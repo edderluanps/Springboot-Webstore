@@ -17,7 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Products implements Serializable {
+public class Produtos implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,16 +40,16 @@ public class Products implements Serializable {
     @JsonIgnore
     @ManyToMany
     @JoinTable(name = "Product_categories", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "categories_id"))
-    private List<Categories> categories = new ArrayList<>();
+    private List<Categorias> categories = new ArrayList<>();
     
     @JsonIgnore
     @OneToMany(mappedBy = "id.produto")
     private Set<ItemPedido> itens = new HashSet<>();
     
-    public Products() {
+    public Produtos() {
     }
 
-    public Products(Integer id, String name, Double price) {
+    public Produtos(Integer id, String name, Double price) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -79,11 +79,11 @@ public class Products implements Serializable {
         this.price = price;
     }
 
-    public List<Categories> getCategories() {
+    public List<Categorias> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Categories> categories) {
+    public void setCategories(List<Categorias> categories) {
         this.categories = categories;
     }
 
@@ -113,7 +113,7 @@ public class Products implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Products other = (Products) obj;
+        final Produtos other = (Produtos) obj;
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
