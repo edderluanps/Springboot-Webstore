@@ -19,4 +19,8 @@ public class CategoriesService {
         return obj.orElseThrow(() -> new ObjectNotFoundException("Obj não encontrado! Id: " + id + ", Tipo: " + Categories.class.getName()));
     }
     
+    public Categories insert(Categories obj){
+        return catrepo.save(obj);
+    }
+    
 }
