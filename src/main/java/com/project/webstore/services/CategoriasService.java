@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.project.webstore.repositories.CategoriasRepository;
+import java.util.List;
 import org.springframework.dao.DataIntegrityViolationException;
 
 @Service
@@ -14,6 +15,10 @@ public class CategoriasService {
     
     @Autowired
     private CategoriasRepository catrepo;
+    
+    public List<Categorias> findAll() {
+        return catrepo.findAll();
+    }
     
     public Categorias find(Integer id) {
         Optional<Categorias> obj = catrepo.findById(id);
