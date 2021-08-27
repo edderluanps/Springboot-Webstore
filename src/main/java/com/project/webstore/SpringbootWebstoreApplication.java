@@ -68,6 +68,11 @@ public class SpringbootWebstoreApplication implements CommandLineRunner {
 
         Categorias cat1 = new Categorias(null, "Informática");
         Categorias cat2 = new Categorias(null, "Escrtitório");
+        Categorias cat3 = new Categorias(null, "Cama mesa e banho");
+        Categorias cat4 = new Categorias(null, "Eletronicos");
+        Categorias cat5 = new Categorias(null, "Jardinajem");
+        Categorias cat6 = new Categorias(null, "Decoração");
+        Categorias cat7 = new Categorias(null, "Perfumaria");
         
         Produtos prod1 = new Produtos(null, "Computador", 2000.00);
         Produtos prod2 = new Produtos(null, "Impressora", 800.00);
@@ -80,7 +85,7 @@ public class SpringbootWebstoreApplication implements CommandLineRunner {
         prod2.getCategories().addAll(Arrays.asList(cat1, cat2));
         prod3.getCategories().addAll(Arrays.asList(cat1));
 
-        categoriesRepository.saveAll(Arrays.asList(cat1, cat2));
+        categoriesRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7));
         productsRepository.saveAll(Arrays.asList(prod1, prod2, prod3));
 
         Estado est1 = new Estado(null, "Minas Gerais");

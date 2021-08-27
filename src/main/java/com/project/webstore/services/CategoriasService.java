@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 import com.project.webstore.repositories.CategoriasRepository;
 import java.util.List;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.jaxb.SpringDataJaxb;
 
 @Service
 public class CategoriasService {
@@ -42,5 +46,11 @@ public class CategoriasService {
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityException("Não é possíve excluir: Categoria preenchida!");
         }
+    }
+    
+    public Page<Categorias> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+        
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+        return catrepo.findAll(pageRequest);
     }
 }
