@@ -1,6 +1,7 @@
 package com.project.webstore.services;
 
 import com.project.webstore.domains.Categorias;
+import com.project.webstore.dto.CategoriasDTO;
 import com.project.webstore.services.exception.ObjectNotFoundException;
 import com.project.webstore.services.exception.DataIntegrityException;
 import java.util.Optional;
@@ -53,4 +54,10 @@ public class CategoriasService {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
         return catrepo.findAll(pageRequest);
     }
+
+    public Categorias fromDTO(CategoriasDTO objDTO) {
+        return new Categorias(objDTO.getId(), objDTO.getName());
+
+    }
+
 }

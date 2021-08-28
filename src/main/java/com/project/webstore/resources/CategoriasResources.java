@@ -6,6 +6,7 @@ import com.project.webstore.services.CategoriasService;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -39,8 +40,9 @@ public class CategoriasResources {
         
     }
     
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
-    public ResponseEntity<Void> insert(@RequestBody Categorias obj) {
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Void> insert(@Valid @RequestBody CategoriasDTO objDTO) {
+        Categorias obj = catservice.fromDTO(objDTO);
         obj = catservice.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).build();
@@ -48,7 +50,8 @@ public class CategoriasResources {
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Void> update(@RequestBody Categorias obj, @PathVariable Integer id){
+    public ResponseEntity<Void> update(@Valid @RequestBody CategoriasDTO objDTO, @PathVariable Integer id){
+        Categorias obj = catservice.fromDTO(objDTO);
         obj.setId(id);
         obj = catservice.update(obj);
         return ResponseEntity.noContent().build();
