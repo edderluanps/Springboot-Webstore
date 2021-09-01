@@ -73,4 +73,5 @@ public class CategoriasResources {
         Page<CategoriasDTO> listDTO = list.map(obj -> new CategoriasDTO(obj));
         return ResponseEntity.ok().body(listDTO);
     }
+    
 }
