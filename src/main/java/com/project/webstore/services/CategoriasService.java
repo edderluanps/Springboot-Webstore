@@ -34,9 +34,10 @@ public class CategoriasService {
         return catrepo.save(obj);
     }
     
-    public Categorias update(Categorias obj){
-        find(obj.getId());
-        return catrepo.save(obj);
+    public Categorias update(Categorias obj) {
+        Categorias newobj = find(obj.getId());
+        updateData(newobj, obj);
+        return catrepo.save(newobj);
     }
 
     public void delete(Integer id){
@@ -57,6 +58,11 @@ public class CategoriasService {
     public Categorias fromDTO(CategoriasDTO objDTO) {
         return new Categorias(objDTO.getId(), objDTO.getName());
 
+    }
+
+    private void updateData(Categorias newobj, Categorias obj){
+        newobj.setName(obj.getName());
+  
     }
 
 }
