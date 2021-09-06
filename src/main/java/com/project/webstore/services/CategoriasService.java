@@ -31,6 +31,7 @@ public class CategoriasService {
     }
     
     public Categorias insert(Categorias obj){
+        obj.setId(null);
         return catrepo.save(obj);
     }
     

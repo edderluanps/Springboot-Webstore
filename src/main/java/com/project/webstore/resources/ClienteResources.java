@@ -2,6 +2,7 @@ package com.project.webstore.resources;
 
 import com.project.webstore.domains.Cliente;
 import com.project.webstore.dto.ClienteDTO;
+import com.project.webstore.dto.ClienteNewDTO;
 import com.project.webstore.services.ClienteService;
 import java.net.URI;
 import java.util.List;
@@ -41,7 +42,7 @@ public class ClienteResources {
     }
     
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> insert(@Valid @RequestBody ClienteDTO objDTO) {
+    public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDTO) {
         Cliente obj = clienteService.fromDTO(objDTO);
         obj = clienteService.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
