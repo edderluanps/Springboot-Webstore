@@ -5,7 +5,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
-
 public class ClienteNewDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -19,7 +18,7 @@ public class ClienteNewDTO implements Serializable {
     private String email;
 
     @NotEmpty(message = "Preenchimento obrigatório")
-    private String cpfouCnpj;
+    private String cpfOuCnpj;
 
     private Integer tipo;
 
@@ -49,7 +48,6 @@ public class ClienteNewDTO implements Serializable {
     private Integer cidadeId;
 
     public ClienteNewDTO() {
-        
     }
 
     public String getNome() {
@@ -68,12 +66,12 @@ public class ClienteNewDTO implements Serializable {
         this.email = email;
     }
 
-    public String getCpfouCnpj() {
-        return cpfouCnpj;
+    public String getCpfOuCnpj() {
+        return cpfOuCnpj;
     }
 
-    public void setCpfouCnpj(String cpfouCnpj) {
-        this.cpfouCnpj = cpfouCnpj;
+    public void setCpfOuCnpj(String cpfOuCnpj) {
+        this.cpfOuCnpj = cpfOuCnpj;
     }
 
     public Integer getTipo() {
@@ -155,5 +153,13 @@ public class ClienteNewDTO implements Serializable {
     public void setCidadeId(Integer cidadeId) {
         this.cidadeId = cidadeId;
     }
-    
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
 }

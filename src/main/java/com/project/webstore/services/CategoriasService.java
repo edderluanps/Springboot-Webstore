@@ -57,12 +57,12 @@ public class CategoriasService {
     }
 
     public Categorias fromDTO(CategoriasDTO objDTO) {
-        return new Categorias(objDTO.getId(), objDTO.getName());
+        return new Categorias(objDTO.getId(), objDTO.getNome());
 
     }
 
     private void updateData(Categorias newobj, Categorias obj){
-        newobj.setName(obj.getName());
+        newobj.setNome(obj.getNome());
   
     }
 
