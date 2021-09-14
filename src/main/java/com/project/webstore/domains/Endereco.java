@@ -3,6 +3,7 @@ package com.project.webstore.domains;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,11 +28,11 @@ public class Endereco implements Serializable{
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="cliente_id")
-	private Cliente cliente;
-	
-	@ManyToOne
-	@JoinColumn(name="cidade_id")
-	private Cidade cidade;
+	private Cliente cliente;	
+        
+        @ManyToOne
+        @JoinColumn(name = "cidade_id")
+        private Cidade cidade;
     
     public Endereco() {
     }
