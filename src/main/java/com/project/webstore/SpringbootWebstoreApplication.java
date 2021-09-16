@@ -77,16 +77,43 @@ public class SpringbootWebstoreApplication implements CommandLineRunner {
         Produtos prod1 = new Produtos(null, "Computador", 2000.00);
         Produtos prod2 = new Produtos(null, "Impressora", 800.00);
         Produtos prod3 = new Produtos(null, "Mouse", 80.00);
+        Produtos prod4 = new Produtos(null, "Mesa de escritório", 300.00);
+        Produtos prod5 = new Produtos(null, "Toalha", 50.00);
+        Produtos prod6 = new Produtos(null, "Colcha", 200.00);
+        Produtos prod7 = new Produtos(null, "TV true color", 1200.00);
+        Produtos prod8 = new Produtos(null, "Roçadeira", 800.00);
+        Produtos prod9 = new Produtos(null, "Abajour", 100.00);
+        Produtos prod10 = new Produtos(null, "Pendente", 180.00);
+        Produtos prod11 = new Produtos(null, "Shampoo", 90.00);
+                
+        cat1.getProdutos().addAll(Arrays.asList(prod1, prod2, prod3));
+        cat2.getProdutos().addAll(Arrays.asList(prod2));
         
-        cat1.getProducts().addAll(Arrays.asList(prod1, prod2, prod3));
-        cat2.getProducts().addAll(Arrays.asList(prod2));
-        
-        prod1.getCategories().addAll(Arrays.asList(cat1));
-        prod2.getCategories().addAll(Arrays.asList(cat1, cat2));
-        prod3.getCategories().addAll(Arrays.asList(cat1));
+        prod1.getCategorias().addAll(Arrays.asList(cat1));
+        prod2.getCategorias().addAll(Arrays.asList(cat1, cat2));
+        prod3.getCategorias().addAll(Arrays.asList(cat1));
+
+        cat2.getProdutos().addAll(Arrays.asList(prod2, prod4));
+        cat3.getProdutos().addAll(Arrays.asList(prod5, prod6));
+        cat4.getProdutos().addAll(Arrays.asList(prod1, prod2, prod3, prod7));
+        cat5.getProdutos().addAll(Arrays.asList(prod8));
+        cat6.getProdutos().addAll(Arrays.asList(prod9, prod10));
+        cat7.getProdutos().addAll(Arrays.asList(prod11));
+
+        prod1.getCategorias().addAll(Arrays.asList(cat1, cat4));
+        prod2.getCategorias().addAll(Arrays.asList(cat1, cat2, cat4));
+        prod3.getCategorias().addAll(Arrays.asList(cat1, cat4));
+        prod4.getCategorias().addAll(Arrays.asList(cat2));
+        prod5.getCategorias().addAll(Arrays.asList(cat3));
+        prod6.getCategorias().addAll(Arrays.asList(cat3));
+        prod7.getCategorias().addAll(Arrays.asList(cat4));
+        prod8.getCategorias().addAll(Arrays.asList(cat5));
+        prod9.getCategorias().addAll(Arrays.asList(cat6));
+        prod10.getCategorias().addAll(Arrays.asList(cat6));
+        prod11.getCategorias().addAll(Arrays.asList(cat7));
 
         categoriesRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7));
-        productsRepository.saveAll(Arrays.asList(prod1, prod2, prod3));
+        productsRepository.saveAll(Arrays.asList(prod1, prod2, prod3, prod4, prod5, prod6, prod7, prod8, prod9, prod10, prod11));
 
         Estado est1 = new Estado(null, "Minas Gerais");
         Estado est2 = new Estado(null, "Sao Paulo");
