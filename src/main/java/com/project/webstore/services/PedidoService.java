@@ -17,32 +17,32 @@ import org.springframework.stereotype.Service;
 public class PedidoService {
 
     @Autowired
-    private PedidoRepository pedidosRepo;
-    
-    @Autowired
-    private ClienteService clienteService;
-    
-    @Autowired
-    private BoletoService boletoService;    
-    
-    @Autowired
-    private ProdutosService prodsService;
+    private PedidoRepository repo;
 
     @Autowired
-    private PagamentoRepository pagamentoRepository;    
+    private BoletoService boletoService;
+
+    @Autowired
+    private PagamentoRepository pagamentoRepository;
 
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
-    
+
+    @Autowired
+    private ProdutosService produtoService;
+
+    @Autowired
+    private ClienteService clienteService;
+
     @Autowired
     private EmailService emailService;
 
     public Pedidos find(Integer id) {
-        Optional<Pedidos> obj = pedidosRepo.findById(id);
-
-        return obj.orElseThrow(() -> new ObjectNotFoundException("Obj não encontrado! Id: " + id + ", Tipo: " + Pedidos.class.getName()));
+        Optional<Pedidos> obj = repo.findById(id);
+        return obj.orElseThrow(() -> new ObjectNotFoundException(
+                "Objeto não encontrado! Id: " + id + ", Tipo: " + Pedidos.class.getName()));
     }
-    
+
     public Pedidos insert(Pedidos obj) {
         obj.setId(null);
         obj.setInstante(new Date());
@@ -53,16 +53,17 @@ public class PedidoService {
             PagamentoComBoleto pagto = (PagamentoComBoleto) obj.getPagamento();
             boletoService.preencherPagamentoComBoleto(pagto, obj.getInstante());
         }
-        obj = pedidosRepo.save(obj);
+        obj = repo.save(obj);
         pagamentoRepository.save(obj.getPagamento());
         for (ItemPedido ip : obj.getItens()) {
             ip.setDesconto(0.0);
-            ip.setProduto(prodsService.find(ip.getProduto().getId()));
+            ip.setProduto(produtoService.find(ip.getProduto().getId()));
             ip.setPreco(ip.getProduto().getPrice());
             ip.setPedido(obj);
         }
         itemPedidoRepository.saveAll(obj.getItens());
         emailService.sendOrderConfirmationEmail(obj);
         return obj;
+    
     }
 }
