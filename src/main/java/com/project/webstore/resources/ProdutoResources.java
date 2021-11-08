@@ -29,13 +29,13 @@ public class ProdutoResources {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Page<ProdutosDTO>> findPage(
-            @RequestParam(value = "name", defaultValue = "") String name,
+            @RequestParam(value = "nome", defaultValue = "") String nome,
             @RequestParam(value = "categorias", defaultValue = "") String categorias,
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
             @RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
             @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
-        String nomeDecoded = URL.decodeParam(name);
+        String nomeDecoded = URL.decodeParam(nome);
         List<Integer> ids = URL.decodeIntList(categorias);
         Page<Produtos> list = service.search(nomeDecoded, ids, page, linesPerPage, orderBy, direction);
         Page<ProdutosDTO> listDto = list.map(obj -> new ProdutosDTO(obj));

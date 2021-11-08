@@ -18,8 +18,9 @@ public class ProdutosService {
 
     @Autowired
     private ProdutosRepository produtoRepo;
-    
-    @Autowired CategoriasRepository catRepo;
+
+    @Autowired
+    CategoriasRepository catRepo;
 
     public Produtos find(Integer id) {
         Optional<Produtos> obj = produtoRepo.findById(id);
