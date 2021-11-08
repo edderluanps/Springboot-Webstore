@@ -60,7 +60,7 @@ public class DBService {
 
     public void instantiateTestDatabase() throws ParseException {
 
-                Categorias cat1 = new Categorias(null, "Informática");
+        Categorias cat1 = new Categorias(null, "Informática");
         Categorias cat2 = new Categorias(null, "Escritório");
         Categorias cat3 = new Categorias(null, "Cama mesa e banho");
         Categorias cat4 = new Categorias(null, "Eletrônicos");
@@ -116,7 +116,7 @@ public class DBService {
         estadoRepository.saveAll(Arrays.asList(est1, est2));
         cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 
-        Cliente cli1 = new Cliente(null, "Maria Silva", "maria@email.com", "1234567890", TipoCliente.PESSOAFISICA);
+        Cliente cli1 = new Cliente(null, "Maria Silva", "mariasilva@email.com", "1234567890", TipoCliente.PESSOAFISICA);
 
         cli1.getTelefones().addAll(Arrays.asList("87654321", "12345678"));
 

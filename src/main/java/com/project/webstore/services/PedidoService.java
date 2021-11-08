@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PedidoService {
+    
+    @Autowired
+    private EmailService emailservice;
 
     @Autowired
     private PedidoRepository repo;
@@ -65,7 +68,7 @@ public class PedidoService {
         
         itemPedidoRepository.saveAll(obj.getItens());
         
-        //System.out.println(obj);
+        emailservice.sendOrderConfirmationEmail(obj);
         
         return obj;
     

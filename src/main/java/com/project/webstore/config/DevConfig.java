@@ -1,6 +1,8 @@
 package com.project.webstore.config;
 
 import com.project.webstore.services.DBService;
+import com.project.webstore.services.EmailService;
+import com.project.webstore.services.SmtpEmailService;
 import java.text.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +13,7 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 @Profile("dev")
 public class DevConfig {
-    
+
     @Autowired
     private DBService dbservice;
 
@@ -19,14 +21,19 @@ public class DevConfig {
     private String strategy;
 
     @Bean
-    public boolean instantiateDataBase() throws ParseException{
-        
-		if (!"create".equals(strategy)) {
-			return false;
-		}
-                
+    public boolean instantiateDataBase() throws ParseException {
+
+        if (!"create".equals(strategy)) {
+            return false;
+        }
+
         dbservice.instantiateTestDatabase();
         return true;
     }
-    
+
+    @Bean
+    public EmailService emailService() {
+        return new SmtpEmailService();
+    }
+
 }
