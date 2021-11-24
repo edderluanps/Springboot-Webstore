@@ -26,10 +26,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DBService {
+    
+    @Autowired
+    private BCryptPasswordEncoder bcpe;
 
     @Autowired
     private ProdutosRepository productsRepository;
@@ -116,7 +120,7 @@ public class DBService {
         estadoRepository.saveAll(Arrays.asList(est1, est2));
         cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 
-        Cliente cli1 = new Cliente(null, "Maria Silva", "mariasilva@email.com", "1234567890", TipoCliente.PESSOAFISICA);
+        Cliente cli1 = new Cliente(null, "Maria Silva", "mariasilva@email.com", "1234567890", TipoCliente.PESSOAFISICA, bcpe.encode("12345"));
 
         cli1.getTelefones().addAll(Arrays.asList("87654321", "12345678"));
 
