@@ -12,6 +12,7 @@ import com.project.webstore.domains.PagamentoComCartao;
 import com.project.webstore.domains.Pedidos;
 import com.project.webstore.domains.Produtos;
 import com.project.webstore.domains.enums.EstadoPagamento;
+import com.project.webstore.domains.enums.Perfil;
 import com.project.webstore.domains.enums.TipoCliente;
 import com.project.webstore.repositories.CategoriasRepository;
 import com.project.webstore.repositories.CidadeRepository;
@@ -121,16 +122,21 @@ public class DBService {
         cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 
         Cliente cli1 = new Cliente(null, "Maria Silva", "mariasilva@email.com", "1234567890", TipoCliente.PESSOAFISICA, bcpe.encode("12345"));
-
         cli1.getTelefones().addAll(Arrays.asList("87654321", "12345678"));
+
+        Cliente cli2 = new Cliente(null, "Ana Silva", "anasilva@email.com", "0987654321", TipoCliente.PESSOAFISICA, bcpe.encode("12345"));
+        cli2.getTelefones().addAll(Arrays.asList("98498465", "87654321"));
+        cli2.addPerfil(Perfil.ADMIN);
 
         Endereco e1 = new Endereco(null, "Rua X", "1", "prox. ao castelo do rei", "centro", "33987-000", cli1, c1);
         Endereco e2 = new Endereco(null, "Rua Y", "2", "prox. ao castelo da rainha", "centro", "12345-000", cli1, c2);
+        Endereco e3 = new Endereco(null, "Rua Z", "3", null, "centro", "98751-000", cli2, c2);
 
         cli1.getEndereco().addAll(Arrays.asList(e1, e2));
+        cli2.getEndereco().addAll(Arrays.asList(e3));
 
-        clienteRepository.saveAll(Arrays.asList(cli1));
-        enderecoRepository.saveAll(Arrays.asList(e1, e2));
+        clienteRepository.saveAll(Arrays.asList(cli1, cli2));
+        enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
