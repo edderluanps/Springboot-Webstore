@@ -1,5 +1,6 @@
 package com.project.webstore.services;
 
+import com.project.webstore.domains.Cliente;
 import com.project.webstore.domains.Pedidos;
 import javax.mail.internet.MimeMessage;
 import org.springframework.mail.SimpleMailMessage;
@@ -13,5 +14,7 @@ public interface EmailService {
     void sendOrderConfirmationHtmlEmail(Pedidos obj);
 
     void SendHtmlEmail(MimeMessage msg);
+    
+    void sendNewPasswordEmail(Cliente cliente, String newPass);
 
 }
