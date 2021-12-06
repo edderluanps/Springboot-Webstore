@@ -3,12 +3,15 @@ package com.project.webstore.services;
 import com.project.webstore.domains.Cidade;
 import com.project.webstore.domains.Cliente;
 import com.project.webstore.domains.Endereco;
+import com.project.webstore.domains.enums.Perfil;
 import com.project.webstore.domains.enums.TipoCliente;
 import com.project.webstore.dto.ClienteDTO;
 import com.project.webstore.dto.ClienteNewDTO;
 import com.project.webstore.repositories.CidadeRepository;
 import com.project.webstore.repositories.ClienteRepository;
 import com.project.webstore.repositories.EnderecoRepository;
+import com.project.webstore.security.UserSS;
+import com.project.webstore.services.exception.AuthorizationException;
 import com.project.webstore.services.exception.DataIntegrityException;
 import com.project.webstore.services.exception.ObjectNotFoundException;
 import java.util.List;
@@ -42,6 +45,14 @@ public class ClienteService {
     }
     
     public Cliente find(Integer id) {
+        
+        UserSS user = UserService.authenticated();
+        
+        if(user == null || user.hasRole(Perfil.ADMIN)){
+            throw new AuthorizationException("Acesso negado!");
+            
+        }
+        
         Optional<Cliente> obj = clienteRepo.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException("Obj não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
     }

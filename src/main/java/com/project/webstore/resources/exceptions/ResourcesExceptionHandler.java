@@ -1,5 +1,6 @@
 package com.project.webstore.resources.exceptions;
 
+import com.project.webstore.services.exception.AuthorizationException;
 import com.project.webstore.services.exception.DataIntegrityException;
 import com.project.webstore.services.exception.ObjectNotFoundException;
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +42,14 @@ public class ResourcesExceptionHandler {
         }
         
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+    }
+    
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<StandardError> authorization(AuthorizationException e, HttpServletRequest request){
+        
+        StandardError err = new StandardError(HttpStatus.FORBIDDEN.value(), e.getMessage(), System.currentTimeMillis());
+        
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
     }
     
 }
