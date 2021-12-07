@@ -7,13 +7,14 @@ import com.project.webstore.domains.enums.Perfil;
 import com.project.webstore.domains.enums.TipoCliente;
 import com.project.webstore.dto.ClienteDTO;
 import com.project.webstore.dto.ClienteNewDTO;
-import com.project.webstore.repositories.CidadeRepository;
 import com.project.webstore.repositories.ClienteRepository;
 import com.project.webstore.repositories.EnderecoRepository;
 import com.project.webstore.security.UserSS;
 import com.project.webstore.services.exception.AuthorizationException;
 import com.project.webstore.services.exception.DataIntegrityException;
 import com.project.webstore.services.exception.ObjectNotFoundException;
+import java.awt.image.BufferedImage;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,74 +25,97 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ClienteService {
-    
-    @Autowired
-    private BCryptPasswordEncoder bcpe;
 
     @Autowired
-    private ClienteRepository clienteRepo;
-    
-    @Autowired
-    private CidadeRepository cidadeRepository;
+    private ClienteRepository repo;
 
     @Autowired
-    private EnderecoRepository enderecoRepository;    
-    
-    public List<Cliente> findAll() {
-        return clienteRepo.findAll();
-    }
-    
+    private EnderecoRepository enderecoRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder pe;
+
+    @Autowired
+    private S3Service s3Service;
+
+    @Autowired
+    private ImageService imageService;
+
+    @Value("${img.prefix.client.profile}")
+    private String prefix;
+
+    @Value("${img.profile.size}")
+    private Integer size;
+
     public Cliente find(Integer id) {
-        
+
         UserSS user = UserService.authenticated();
-        
-        if(user == null || user.hasRole(Perfil.ADMIN)){
-            throw new AuthorizationException("Acesso negado!");
-            
+        if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+            throw new AuthorizationException("Acesso negado");
         }
-        
-        Optional<Cliente> obj = clienteRepo.findById(id);
-        return obj.orElseThrow(() -> new ObjectNotFoundException("Obj não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
+
+        Optional<Cliente> obj = repo.findById(id);
+        return obj.orElseThrow(() -> new ObjectNotFoundException(
+                "Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
     }
-    
+
     @Transactional
     public Cliente insert(Cliente obj) {
         obj.setId(null);
-        obj = clienteRepo.save(obj);
+        obj = repo.save(obj);
         enderecoRepository.saveAll(obj.getEndereco());
         return obj;
     }
-    
+
     public Cliente update(Cliente obj) {
-        Cliente newobj = find(obj.getId());
-        updateData(newobj, obj);
-        return clienteRepo.save(newobj);
+        Cliente newObj = find(obj.getId());
+        updateData(newObj, obj);
+        return repo.save(newObj);
     }
 
     public void delete(Integer id) {
         find(id);
         try {
-            clienteRepo.deleteById(id);
+            repo.deleteById(id);
         } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityException("Não é possíve excluir: Categoria preenchida!");
+            throw new DataIntegrityException("Não é possível excluir porque há pedidos relacionados");
         }
+    }
+
+    public List<Cliente> findAll() {
+        return repo.findAll();
+    }
+
+    public Cliente findByEmail(String email) {
+        UserSS user = UserService.authenticated();
+        if (user == null || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+            throw new AuthorizationException("Acesso negado");
+        }
+
+        Cliente obj = repo.findByEmail(email);
+        if (obj == null) {
+            throw new ObjectNotFoundException(
+                    "Objeto não encontrado! Id: " + user.getId() + ", Tipo: " + Cliente.class.getName());
+        }
+        return obj;
     }
 
     public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-        return clienteRepo.findAll(pageRequest);
+        return repo.findAll(pageRequest);
     }
 
-    public Cliente fromDTO(ClienteDTO objDTO) {
-	return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null, null);
-
+    public Cliente fromDTO(ClienteDTO objDto) {
+        return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null, null);
     }
 
     public Cliente fromDTO(ClienteNewDTO objDto) {
-        Cliente cli = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(), TipoCliente.toEnum(objDto.getTipo()), bcpe.encode(objDto.getSenha()));
+        Cliente cli = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(), TipoCliente.toEnum(objDto.getTipo()), pe.encode(objDto.getSenha()));
         Cidade cid = new Cidade(objDto.getCidadeId(), null, null);
         Endereco end = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), cli, cid);
         cli.getEndereco().add(end);
@@ -104,10 +128,24 @@ public class ClienteService {
         }
         return cli;
     }
-    
-    private void updateData(Cliente newobj, Cliente obj){
-        newobj.setNome(obj.getNome());
-        newobj.setEmail(obj.getEmail());    
+
+    private void updateData(Cliente newObj, Cliente obj) {
+        newObj.setNome(obj.getNome());
+        newObj.setEmail(obj.getEmail());
     }
-    
+
+    public URI uploadProfilePicture(MultipartFile multipartFile) {
+        UserSS user = UserService.authenticated();
+        if (user == null) {
+            throw new AuthorizationException("Acesso negado");
+        }
+
+        BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+        jpgImage = imageService.cropSquare(jpgImage);
+        jpgImage = imageService.resize(jpgImage, size);
+
+        String fileName = prefix + user.getId() + ".jpg";
+
+        return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
+    }
 }
