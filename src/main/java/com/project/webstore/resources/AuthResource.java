@@ -1,4 +1,4 @@
-package com.project.webstore.resources.util;
+package com.project.webstore.resources;
 
 import com.project.webstore.dto.EmailDTO;
 import com.project.webstore.security.JWTUtil;
