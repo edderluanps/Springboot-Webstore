@@ -1,5 +1,16 @@
-# Springboot-Webstore
+# Sobre
 API Rest utilizando Springboot, desenvolvido juntamente com o curso de Desenvolvimento Full Stack - Java Spring Boot + Angular Ionic
+
+# Tecnologias
+
+## Back end
+* Java (JDK 8)
+* Spring Boot
+* JPA/Hibernate
+
+## Banco de dados
+* H2 (Testes)
+* MySQL
 
 ## Instalação
 
